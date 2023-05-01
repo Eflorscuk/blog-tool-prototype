@@ -5,6 +5,8 @@ const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-ac
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
+const admin = require("./routes/admin")
+
 const app = express()
 const port = 8084
 
@@ -24,7 +26,7 @@ app.set('views', './views')
 
 
 // Routes
-
+app.use('/admin', admin)
 // Others
 
 try {
