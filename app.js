@@ -4,6 +4,7 @@ const { engine } = require('express-handlebars')
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const path = require('path')
 
 const admin = require("./routes/admin")
 
@@ -24,6 +25,7 @@ app.engine('handlebars',
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 
+app.use(express.static(path.join(__dirname, "public")))
 
 // Routes
 app.use('/admin', admin)
