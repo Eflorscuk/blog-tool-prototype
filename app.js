@@ -27,6 +27,9 @@ app.set('views', './views')
 
 app.use(express.static(path.join(__dirname, "public")))
 
+
+
+
 // Routes
 app.use('/admin', admin)
 // Others
