@@ -3,10 +3,10 @@ const Handlebars = require('handlebars')
 const { engine } = require('express-handlebars')
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access')
 const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
 const path = require('path')
 
 const admin = require("./routes/admin")
+const { conn } = require('./server')
 
 const app = express()
 const port = 8084
