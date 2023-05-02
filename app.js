@@ -22,24 +22,20 @@ require("./config/auth")(passport)
 const app = express()
 const port = 8084
 
-// Conf
-app.use(session({
-    secret: "test",
+const dataSession = {
+    secret: "teste",
     resave: true,
     saveUninitialized: true
-}))
+}
 
-app.use(passport.initialize())
-app.use(passport.session())
+// Conf
+app.use(session(dataSession))
 app.use(flash())
-
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash("success_msg")
     res.locals.error_msg = req.flash("error_msg")
-    res.locals.error = req.flash("error")
-    res.locals.user = req.user || null
     next()
-}) 
+})
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
@@ -56,7 +52,9 @@ app.set('views', './views')
 
 app.use(express.static(path.join(__dirname, "public")))
 
+app.use((req, res, next) => {
 
+})
 
 
 // Routes
