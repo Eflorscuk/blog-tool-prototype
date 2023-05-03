@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require("mongoose")
 require("../models/Category")
 const Category = mongoose.model("categories")
+require("../models/Posts")
+const Posts = mongoose.model("posts")
 
 router.get('/', (req, res) => {
     res.render("admin/index")
@@ -114,7 +116,12 @@ router.post("/categories/delete/", (req, res) => {
 })
 
 router.get("/posts", (req, res) => {
-    res.render("admin/posts")
+    Posts.find().populate("category").then(post => {
+        res.render("admin/posts", { post: post})
+    }).catch(err => {
+        req.flash("error_msg", "Post error...")
+        res.redirect("/admin")
+    })
 })
 
 router.get("/posts/add", (req, res) => {
@@ -123,6 +130,34 @@ router.get("/posts/add", (req, res) => {
     }).catch(err => {
         req.flash("error_msg", "Error loading form")
     })
+})
+
+router.post("/posts/new", (req, res) => {
+    const errors = []
+
+    if(req.body.category == "0") {
+        errors.push({ text: "Invalid category, register a new category"})
+    }
+
+    if(errors.length > 0) {
+        res.render("admin/posts", { erors: errors })
+    } else {
+        const newPost = {
+            title: req.body.title,
+            description: req.body.description,
+            content: req.body.content,
+            category: req.body.category,
+            slug: req.body.slug
+        }
+
+        new Posts(newPost).save().then(_ => {
+            req.flash("success_msg", "Post created successfully")
+            res.redirect("/admin/posts")
+        }).catch(err => {
+            req.flash("error_msg", "There was an error saving the post")
+            console.log("Error Post ===> ", err)
+        })
+    }
 })
 
 module.exports = router
