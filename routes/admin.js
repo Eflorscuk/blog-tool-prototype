@@ -107,4 +107,15 @@ router.post("/categories/edit", (req, res) => {
     })
 })
 
+router.post("/categories/delete/", (req, res) => {
+    Category.findOneAndRemove({ _id: req.body.id }).then(_ => {
+        req.flash("success_msg", "Category Deleted")
+        res.redirect("/admin/categories")
+    }).catch(err => {
+        req.flash("error_msg", "An Error to delete")
+        res.redirect("/admin/categories")
+    })
+})
+    
+
 module.exports = router
