@@ -13,7 +13,12 @@ router.get('/posts', (req, res) => {
 })
 
 router.get('/categories', (req, res) => {
-    res.render("admin/categories")
+    Category.find().sort({date: 'desc'}).then(category => {
+        res.render("admin/categories", { category: category})
+    }).catch(err => {
+        req.flash("error_msg", "Category error...")
+        res.redirect("admin/")
+    })
 })
 
 router.get("/categories/add", (req, res) => {
@@ -37,6 +42,7 @@ router.post("/categories/new", (req, res) => {
 
     if(errors.length > 0) {
         res.render("admin/addCategories", { errors: errors })
+        return
     }
 
     const newCategory = {
@@ -45,8 +51,10 @@ router.post("/categories/new", (req, res) => {
     }
 
     new Category(newCategory).save().then(_ => {
-        console.log("New Category Save")
+        req.flash('success_msg', 'Category created')
+        res.redirect('/admin/categories')
     }).catch(err => {
+        req.flash('error_msg', 'Try again! Error to save the new category.')
         console.log(`Error ===> ${err}`)
     })
 })

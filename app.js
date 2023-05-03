@@ -8,7 +8,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 
 const admin = require("./routes/admin")
-//const { conn } = require('./server')
+const { conn } = require('./server')
 
 const app = express()
 const port = 8084
