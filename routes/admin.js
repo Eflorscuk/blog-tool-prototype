@@ -160,4 +160,50 @@ router.post("/posts/new", (req, res) => {
     }
 })
 
+router.get("/posts/edit/:id", (req, res) => {
+    Posts.findOne({ _id: req.params.id })
+        .then(post => {
+            Category.find()
+                .then(category => {
+                    res.render("admin/editPost", { 
+                        category: category, 
+                        post: post
+                    })
+                })
+                .catch(err => {
+                    req.flash("error_msg", "Error to find a category")
+                    res.redirect("admin/posts")
+                })
+        })
+        .catch(err => {
+            req.flash("error_msg", "Error to loading the edit form")
+            res.redirect("/admin/posts")
+        })
+})
+
+router.post("/posts/edit", (req, res) => {
+    Posts.findOne({ _id: req.body.id })
+        .then(post => {
+            post.title = req.body.title
+            post.slug = req.body.slug
+            post.description = req.body.description
+            post.content = req.body.content
+            post.category = req.body.category
+
+            post.save()
+                .then(_ => {
+                    req.flash("success_msg", "Post edited successfully.")
+                    res.redirect("/admin/posts")
+                })
+                .cathc(err => {
+                    req.flash("error_msg", "There was an error to edited the post.")
+                    res.redirect("/admin/posts")
+                })
+        })
+        .catch(err => {
+            req.flash("error_msg", "There was an error to save the post edition")
+            res.redirect("/admin/posts")
+        })
+})
+
 module.exports = router

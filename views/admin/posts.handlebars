@@ -8,10 +8,13 @@
         <div class="card-body mt-4">
             <h4>{{name}}</h4>
             <p>Description: {{description}}</p>
+            <p>Date: {{date}}</p>
             <p>Content: {{content}}</p>
             <p>Category: {{category.name}}</p>
-            <p>Slug: {{slug}}</p>
-            <p>Date: {{date}}</p>
+            <br>
+            <a href="/admin/posts/edit/{{_id}}">
+                <button class="btn btn-success mt-3">Edit</button>
+            </a>
         </div>
     </div>
     <br>

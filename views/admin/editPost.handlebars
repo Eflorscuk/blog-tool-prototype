@@ -1,0 +1,25 @@
+<h3>Edit Post</h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/posts/edit" method="POST">
+            <input type="hidden" value="{{post._id}}" method="POST">
+            <label for="Title">Title: </label>
+            <input type="text" name="title" id="" class="form-control" value="{{post.title}}">
+            <label for="slug">Slug: </label>
+            <input type="text" name="slug" class="form-control" value="{{post.slug}}">
+            <label for="description">Description: </label>
+            <input type="text" name="description" class="form-control" value="{{post.description}}">
+            <label for="content">Content: </label>
+            <textarea name="content" id="" class="form-control">{{post.content}}</textarea>
+            <label for="category">Category: </label>
+            <select name="category" id="" class="form-control">
+                {{#each category}}
+                    <option value="{{_id}}">{{name}}</option>
+                {{else}}
+                    <option value="0">No Category</option>
+                {{/each}}
+            </select>
+            <button class="btn btn-success mt-4">Create Post</button>
+        </form>
+    </div>
+</div>
