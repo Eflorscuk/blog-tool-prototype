@@ -16,4 +16,9 @@ const Category = new Schema({
     }
 })
 
-mongoose.model("categories", Category)
+const firstCategory = { name: 'JavaScript', slug: 'javascript'}
+
+
+const categoryExport = mongoose.model("categories", Category)
+
+categoryExport.create(firstCategory).then(_ => console.log('Category created successfully'))
