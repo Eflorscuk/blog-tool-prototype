@@ -1,0 +1,21 @@
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to Blog Prototype</h1>
+  <p class="lead">This is an exercise to practice Node and Javascript development.</p>
+  <hr class="my-4">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">Create an Account!</a>
+  </p>
+</div>
+<hr>
+<h2>Recent Posts</h2>
+{{#each post}}
+  <div class="card">
+    <div class="card-body">
+      <h3>{{title}}</h3>
+      <p>{{description}}</p>
+    </div>
+  </div>
+{{else}}
+  <h5>No posts!</h5>
+{{/each}}

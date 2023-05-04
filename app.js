@@ -9,6 +9,10 @@ const flash = require('connect-flash')
 
 const admin = require("./routes/admin")
 const { conn } = require('./server')
+const { default: mongoose } = require('mongoose')
+
+require("./models/Posts")
+const Posts = mongoose.model("posts")
 
 const app = express()
 const port = 8084
@@ -46,6 +50,23 @@ app.use(express.static(path.join(__dirname, "public")))
 
 
 // Routes
+app.get('/', (req, res) => {
+    //console.log(Posts.find().populate("posts"))
+    Posts.find().populate('category')
+        .then(post => {
+            res.render("index", { post: post })
+            //console.log('===> ', post)
+        })
+        .catch(err => {
+            req.flash("error_msg", "There was an error")
+            res.redirect("/404")
+        })
+})
+
+app.get("/404", (req, res) => {
+    res.send("Error 404!")
+})
+
 app.use('/admin', admin)
 // Others
 
