@@ -10,12 +10,20 @@
 <hr>
 <h2>Recent Posts</h2>
 {{#each post}}
-  <div class="card">
+  <div class="card mt-3">
     <div class="card-body">
       <h3>{{title}}</h3>
       <p>{{description}}</p>
+      <a href="/posts/{{slug}}">
+        <button class="btn btn-success">Read more!</button>
+      </a>
+      <hr>
+      <small>{{category.name}}</small>
+      <br>
+      <small>Publication Date: {{date}}</small>
     </div>
   </div>
+  <br>
 {{else}}
   <h5>No posts!</h5>
 {{/each}}

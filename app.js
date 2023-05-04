@@ -63,6 +63,23 @@ app.get('/', (req, res) => {
         })
 })
 
+app.get("/posts/:slug", (req, res) => {
+    Posts.findOne({ slug: req.params.slug })
+        .then(post => {
+            if(post) {
+                res.render("post/index", { post: post })
+            } else {
+                req.flash("error_msg", "This post doesn't exist.")
+                res.redirect("/")
+            }
+        })
+        .catch(err => {
+            console.error('An error occuried ==> ', err)
+            req.flash("error_msg", "There was an intern error")
+            res.redirect("/")
+        })
+})
+
 app.get("/404", (req, res) => {
     res.send("Error 404!")
 })
