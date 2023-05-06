@@ -3,6 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require("../models/User")
 const User = mongoose.model("users")
+const bcrypt = require("bcryptjs")
 
 router.get("/register", (req, res) => {
     res.render("users/register")
@@ -34,7 +35,43 @@ router.post("/register", (req, res) => {
     if (errors.length > 0) {
         res.render("users/register", { errors })
     } else {
+        User.findOne({ email: req.body.email })
+            .then(user => {
+                if (user) {
+                    req.flash("error_msg", "An account with this email already exists in our system")
+                    res.redirect("/users/register")
+                } else {
+                    const newUser = new User({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: req.body.password
+                    })
 
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if (err) {
+                                req.flash("error_msg", "There was an error saving the user")
+                                res.redirect("/")
+                            } else {
+                                newUser.password = hash
+                                newUser.save()
+                                    .then(_ => {
+                                        req.flash("success_msg", "User Created Successfully!")
+                                        res.redirect("/")
+                                    })
+                                    .catch(err => {
+                                        req.flash("error_msg", "An error occurred!")
+                                        res.redirect("/users/register")
+                                    })
+                            }
+                        })
+                    })
+                }
+            })
+            .catch(err => {
+                req.flash("error_msg", "There was an internal error =(")
+                res.redirect("/")
+            })
     }
 })
 
