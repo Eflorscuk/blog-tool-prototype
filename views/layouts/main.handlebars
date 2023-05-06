@@ -10,6 +10,11 @@
 <body>
     <nav>
         {{>_navbar }}
+        {{#if error}}
+            <div class="alert alert-danger">{{error}}</div>
+        {{else}}
+
+        {{/if}}
         {{>_msg}}
     </nav>
     <main>
