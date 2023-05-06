@@ -11,12 +11,13 @@ const admin = require("./routes/admin")
 const users = require("./routes/user")
 const { conn } = require('./server')
 const { default: mongoose } = require('mongoose')
+const passport = require('passport')
 
 require("./models/Posts")
 require("./models/Category")
 const Posts = mongoose.model("posts")
 const Category = mongoose.model("categories")
-
+require("./config/auth")(passport)
 
 const app = express()
 const port = 8084
@@ -27,6 +28,9 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash())
 
 app.use((req, res, next) => {
