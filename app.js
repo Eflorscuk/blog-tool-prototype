@@ -8,6 +8,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 
 const admin = require("./routes/admin")
+const users = require("./routes/user")
 const { conn } = require('./server')
 const { default: mongoose } = require('mongoose')
 
@@ -15,6 +16,7 @@ require("./models/Posts")
 require("./models/Category")
 const Posts = mongoose.model("posts")
 const Category = mongoose.model("categories")
+
 
 const app = express()
 const port = 8084
@@ -116,8 +118,10 @@ app.get("/404", (req, res) => {
 })
 
 app.use('/admin', admin)
-// Others
 
+app.use("/users", users)
+
+// Others
 try {
     app.listen(port, _ => console.log('Successful'))
 } catch(e) {
