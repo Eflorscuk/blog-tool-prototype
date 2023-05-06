@@ -87,4 +87,17 @@ router.post("/login", (req, res, next) => {
         failureFlash: true
     })(req, res, next)
 })
+
+router.get("/logout", (req, res) => {
+    req.logout(err => {
+        if(err) {
+            req.flash("error_msg", "Error during logout!")
+            res.redirect("/")
+        } else {
+            req.flash("success_msg", "Logout done successfuly!")
+            res.redirect("/")
+        }
+    })
+})
+
 module.exports = router
