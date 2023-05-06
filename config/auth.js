@@ -19,19 +19,23 @@ module.exports = function(passport) {
                     if(same) {
                         return done(null, user)
                     } else {
+                        console.error('error ', error)
                         return done(null, false, { message: "Incorrect Password"})
                     }
                 })
             })
     }))
-
     passport.serializeUser((user, done) => {
         done(null, user.id)
     })
 
     passport.deserializeUser((id, done) => {
-        User.findById(id, (err, user) => {
-            done(err, user)
-        })
-    })
+        User.findById(id)
+          .then(user => {
+            done(null, user)
+          })
+          .catch(err => {
+            done(err)
+          })
+      })
 }
