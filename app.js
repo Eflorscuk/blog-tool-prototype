@@ -12,7 +12,9 @@ const { conn } = require('./server')
 const { default: mongoose } = require('mongoose')
 
 require("./models/Posts")
+require("./models/Category")
 const Posts = mongoose.model("posts")
+const Category = mongoose.model("categories")
 
 const app = express()
 const port = 8084
@@ -78,6 +80,35 @@ app.get("/posts/:slug", (req, res) => {
             req.flash("error_msg", "There was an intern error")
             res.redirect("/")
         })
+})
+
+app.get("/categories", (req, res) => {
+    Category.find().then(category => {
+        res.render("categories/", {category: category})
+    }).catch(err => {
+        req.flash("error_msg", "Internal error!")
+        res.redirect("/")
+    })
+})
+
+app.get("/categories/:slug", (req, res) => {
+    Category.findOne({ slug: req.params.slug }).then(category => {
+        try {
+            Posts.find({category: category._id})
+            .then(post => {
+                res.render("categories/posts", {post, category})
+            }).catch(err => {
+                req.flash("error_msg", "There was an error to list posts")
+                res.redirect("/")
+            })
+        } catch(e) {
+            req.flash("error_msg", "This category doesn't exists")
+            res.redirect("/")
+        }
+    }).catch(err => {
+        req.flash("error_msg", "Error to find any category.")
+        res.redirect("/")
+    })
 })
 
 app.get("/404", (req, res) => {

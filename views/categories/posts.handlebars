@@ -1,0 +1,12 @@
+<h1>Posts: </h1>
+{{#each post}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3>{{title}}</h3>
+            <p>{{description}}</p>
+            <small>Date: {{date}}</small>
+        </div>
+    </div>
+{{else}}
+    <h1>Error occurred =(</h1>
+{{/each}}

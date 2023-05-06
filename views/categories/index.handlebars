@@ -1,0 +1,12 @@
+<h1>List of Categories:</h1>
+{{#each category}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <a href="/categories/{{slug}}">
+                <h2>{{name}}</h2>
+            </a>
+        </div>
+    </div>
+{{else}}
+    <h2>Error</h2>
+{{/each}}
